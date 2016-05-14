@@ -3,5 +3,12 @@
 (require rainbow/read)
 (require rainbow/translate)
 
-(let ((defs (read "(module Main)")))
+(let ((defs (read "(module Main)
+
+                   (require Control.Monad.Eff (only Eff))
+                   (require Prelude (all))
+
+                   (sig main (forall (e) (Eff e Unit)))
+                   (def main (pure unit))
+                  ")))
   (translate defs (current-output-port)))
