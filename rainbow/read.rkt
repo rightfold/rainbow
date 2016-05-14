@@ -6,7 +6,7 @@
 )
 
 (lex-define-tokens tokens (SYMBOL))
-(lex-define-empty-tokens empty-tokens (LPAREN RPAREN))
+(lex-define-empty-tokens empty-tokens (LPAREN RPAREN LBRACKET RBRACKET))
 
 (define lex
   (lex-lexer
@@ -15,6 +15,8 @@
      (token-SYMBOL lex-lexeme))
     ("(" (token-LPAREN))
     (")" (token-RPAREN))
+    ("[" (token-LBRACKET))
+    ("]" (token-RBRACKET))
   )
 )
 
@@ -36,4 +38,5 @@
   (test-lex "ab cd" (list (token-SYMBOL "ab") (token-SYMBOL "cd")))
   (test-lex "()" (list (token-LPAREN) (token-RPAREN)))
   (test-lex "(ab)" (list (token-LPAREN) (token-SYMBOL "ab") (token-RPAREN)))
+  (test-lex "[ab]" (list (token-LBRACKET) (token-SYMBOL "ab") (token-RBRACKET)))
 )
