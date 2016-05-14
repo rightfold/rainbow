@@ -1,0 +1,7 @@
+#!/usr/bin/env racket
+#lang racket
+(require rainbow/read)
+(require rainbow/translate)
+
+(let ((defs (read "(module Main)")))
+  (translate defs (current-output-port)))

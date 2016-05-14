@@ -1,7 +1,4 @@
 #lang racket
-(provide
-  (contract-out
-    (read (-> string? list?))))
 (require
   (prefix-in lex- parser-tools/lex)
   (prefix-in re- parser-tools/lex-sre)
@@ -48,6 +45,7 @@
   )
 )
 
+(provide (contract-out (read (-> string? list?))))
 (define (read text)
   (let ((port (open-input-string text)))
     (parse (lambda () (lex port)))))
