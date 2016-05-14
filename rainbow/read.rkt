@@ -7,7 +7,8 @@
 )
 
 (lex-define-tokens tokens (SYMBOL))
-(lex-define-empty-tokens empty-tokens (EOF LPAREN RPAREN LBRACKET RBRACKET))
+(lex-define-empty-tokens empty-tokens
+  (EOF LPAREN RPAREN LBRACKET RBRACKET LBRACE RBRACE))
 
 (define lex
   (lex-lexer
@@ -18,6 +19,8 @@
     (")" (token-RPAREN))
     ("[" (token-LBRACKET))
     ("]" (token-RBRACKET))
+    ("{" (token-LBRACE))
+    ("}" (token-RBRACE))
     ((eof) (token-EOF))
   )
 )
@@ -37,6 +40,7 @@
         ((SYMBOL) $1)
         ((LPAREN sexprs RPAREN) $2)
         ((LBRACKET sexprs RBRACKET) (list->vector $2))
+        ((LBRACE sexprs RBRACE) (apply hash $2))
       )
     )
   )
@@ -65,6 +69,7 @@
   (test-lex "()" (list (token-LPAREN) (token-RPAREN)))
   (test-lex "(ab)" (list (token-LPAREN) (token-SYMBOL 'ab) (token-RPAREN)))
   (test-lex "[ab]" (list (token-LBRACKET) (token-SYMBOL 'ab) (token-RBRACKET)))
+  (test-lex "{ab}" (list (token-LBRACE) (token-SYMBOL 'ab) (token-RBRACE)))
 
   (define (test-parse text sexprs)
     (check-equal? (read text) sexprs))
@@ -74,4 +79,5 @@
   (test-parse "a b" '(a b))
   (test-parse "a () (b)" '(a () (b)))
   (test-parse "a [] [b]" '(a #[] #[b]))
+  (test-parse "a {} {b c d e}" (list 'a (hash) (hash 'b 'c 'd 'e)))
 )
