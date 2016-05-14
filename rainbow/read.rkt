@@ -1,5 +1,7 @@
 #lang racket
-(provide lex parse read)
+(provide
+  (contract-out
+    (read (-> string? list?))))
 (require
   (prefix-in lex- parser-tools/lex)
   (prefix-in re- parser-tools/lex-sre)
