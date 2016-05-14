@@ -1,5 +1,5 @@
 #lang racket
-(provide lex parse)
+(provide lex parse read)
 (require
   (prefix-in lex- parser-tools/lex)
   (prefix-in re- parser-tools/lex-sre)
@@ -42,6 +42,10 @@
   )
 )
 
+(define (read text)
+  (let ((port (open-input-string text)))
+    (parse (lambda () (lex port)))))
+
 (module+ test
   (require rackunit)
 
@@ -63,8 +67,7 @@
   (test-lex "[ab]" (list (token-LBRACKET) (token-SYMBOL 'ab) (token-RBRACKET)))
 
   (define (test-parse text sexprs)
-    (let ((port (open-input-string text)))
-      (check-equal? (parse (lambda () (lex port))) sexprs)))
+    (check-equal? (read text) sexprs))
 
   (test-parse "" '())
   (test-parse "a" '(a))
