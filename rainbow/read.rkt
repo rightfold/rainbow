@@ -12,7 +12,7 @@
 
 (define lex
   (lex-lexer
-    (lex-whitespace (lex lex-input-port))
+    ((re-or lex-whitespace ",") (lex lex-input-port))
     ((re-+ (re-or lex-alphabetic "-" "?" "!"))
      (token-SYMBOL (string->symbol lex-lexeme)))
     ("(" (token-LPAREN))
@@ -63,6 +63,7 @@
   )
 
   (test-lex "" (list))
+  (test-lex " \t\r\n," (list))
   (test-lex "a" (list (token-SYMBOL 'a)))
   (test-lex "ab" (list (token-SYMBOL 'ab)))
   (test-lex "ab cd" (list (token-SYMBOL 'ab) (token-SYMBOL 'cd)))
