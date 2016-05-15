@@ -12,7 +12,7 @@
 (define lex
   (lex-lexer
     ((re-or lex-whitespace ",") (lex lex-input-port))
-    ((re-+ (re-or lex-alphabetic "." "-" "?" "!"))
+    ((re-+ (re-or lex-alphabetic "." "-" ">" "?" "!"))
      (token-SYMBOL (string->symbol lex-lexeme)))
     ("(" (token-LPAREN))
     (")" (token-RPAREN))
