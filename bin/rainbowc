@@ -11,4 +11,4 @@
                    (sig main (forall (e) (Eff e Unit)))
                    (def main (pure unit))
                   ")))
-  (translate defs (current-output-port)))
+  (display (translate defs)))
